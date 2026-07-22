@@ -256,7 +256,7 @@
 
 <div class="card">
   <div class="card-header">
-    <img src="https://portalinstitucional-assets.azureedge.net/strapi/assets/cogna_fd8c0b077b_1_7f0524b5f3.png" alt="Cogna" class="logo">
+    <img src="../Cogna-02.png" alt="Cogna" class="logo">
     <h1>Metodologias Ativas: Aprender fazendo, ensinar transformando</h1>
     <p>Preencha os campos abaixo com seus dados.</p>
   </div>
@@ -682,41 +682,51 @@ form.addEventListener('submit', function(e) {
     unidade: unidadeEl.value
   };
 
-  const urlGoogleScript = "https://script.google.com/macros/s/AKfycby9YNRP5mlFgGB-VQLzbUHeMrloCSxzbpU1zl2Fw7iuq01SN0pf2Lnzdb5GSS77olE/exec";
+  // Cole aqui a URL gerada pelo Power Automate no gatilho HTTP
+  const urlPowerAutomate = "https://defaulta50e7b768ea5492cbf1797d652fc3c.e9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/7f3104d04a8c4bcca77d9992453f89a1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VpzoK33eUNrH4fwgRQWouIeK0n-9tE-RQLOoZX8OH5Q";
 
+  // Muda o texto do botão para indicar carregamento
   const btnSubmit = document.getElementById('submitBtn');
   btnSubmit.textContent = 'Enviando...';
   btnSubmit.disabled = true;
 
-  fetch(urlGoogleScript, {
+  fetch(urlPowerAutomate, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
           'Content-Type': 'application/json'
       },
       body: JSON.stringify(dados)
   })
-  .then(() => {
-      formMsg.textContent = 'Pesquisa enviada com sucesso!';
-      formMsg.classList.add('show', 'success');
+  .then(response => {
+      if (response.ok) {
+          // Se o envio der certo, mostra a mensagem de sucesso e limpa o form
+          formMsg.textContent = 'Pesquisa enviada com sucesso!';
+          formMsg.classList.add('show', 'success');
 
-      form.reset();
-      unidadeEl.disabled = true;
-      unidadeEl.placeholder = 'Selecione primeiro a Regional...';
-      fecharListaUnidade();
-      unidadesDaRegionalAtual = [];
-      unidadeCountEl.textContent = '';
-      document.querySelectorAll('input, select').forEach(function(el) {
-        el.classList.remove('valid', 'invalid');
-      });
-      document.querySelectorAll('.hint').forEach(function(el) { el.textContent = ''; });
+          form.reset();
+          unidadeEl.disabled = true;
+          unidadeEl.placeholder = 'Selecione primeiro a Regional...';
+          fecharListaUnidade();
+          unidadesDaRegionalAtual = [];
+          unidadeCountEl.textContent = '';
+          document.querySelectorAll('input, select').forEach(function(el) {
+            el.classList.remove('valid', 'invalid');
+          });
+          document.querySelectorAll('.hint').forEach(function(el) { el.textContent = ''; });
+      } else {
+          // Se houver erro na resposta do Power Automate
+          formMsg.textContent = 'Erro ao enviar a pesquisa. Tente novamente.';
+          formMsg.classList.add('show', 'error');
+      }
   })
   .catch(error => {
+      // Se houver erro de conexão/internet
       console.error('Erro:', error);
       formMsg.textContent = 'Erro de conexão. Verifique sua internet.';
       formMsg.classList.add('show', 'error');
   })
   .finally(() => {
+      // Retorna o botão ao estado original
       btnSubmit.textContent = 'Enviar Pesquisa';
       btnSubmit.disabled = false;
   });
