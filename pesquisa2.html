@@ -227,7 +227,7 @@
       <div class="hint" id="unidadeHint"></div>
     </div>
 
-    <button type="submit" id="submitBtn">Enviar Pesquisa</button>
+    <button type="submit" id="submitBtn">Enviar Inscrição</button>
     <div id="formMsg"></div>
   </form>
 </div>
@@ -436,8 +436,6 @@ form.addEventListener('submit', function(e) {
   btnSubmit.textContent = 'Enviando...';
   btnSubmit.disabled = true;
 
-  console.log('[Pesquisa] Enviando dados para o Power Automate:', dados);
-
   fetch(urlPowerAutomate, {
       method: 'POST',
       headers: {
@@ -446,19 +444,9 @@ form.addEventListener('submit', function(e) {
       body: JSON.stringify(dados)
   })
   .then(response => {
-      console.log('[Pesquisa] Resposta recebida — status:', response.status, response.statusText);
-
-      // Lê o corpo da resposta (mesmo em caso de erro) só para log/depuração
-      response.clone().text().then(function(texto) {
-          console.log('[Pesquisa] Corpo da resposta:', texto || '(vazio)');
-      }).catch(function(erroLeitura) {
-          console.warn('[Pesquisa] Não foi possível ler o corpo da resposta:', erroLeitura);
-      });
-
       if (response.ok) {
           // Se o envio der certo, mostra a mensagem de sucesso e limpa o form
-          console.log('[Pesquisa] Envio concluído com sucesso.');
-          formMsg.textContent = 'Pesquisa enviada com sucesso!';
+          formMsg.textContent = 'Inscrição enviada com sucesso!';
           formMsg.classList.add('show', 'success');
 
           form.reset();
@@ -468,20 +456,19 @@ form.addEventListener('submit', function(e) {
           document.querySelectorAll('.hint').forEach(function(el) { el.textContent = ''; });
       } else {
           // Se houver erro na resposta do Power Automate
-          console.error('[Pesquisa] O Power Automate respondeu com erro. Status:', response.status, response.statusText);
-          formMsg.textContent = 'Erro ao enviar a pesquisa. Tente novamente.';
+          formMsg.textContent = 'Erro ao enviar a inscrição. Tente novamente.';
           formMsg.classList.add('show', 'error');
       }
   })
   .catch(error => {
       // Se houver erro de conexão/internet (ou bloqueio de CORS)
-      console.error('[Pesquisa] Falha na requisição (rede/CORS):', error);
+      console.error('Erro:', error);
       formMsg.textContent = 'Erro de conexão. Verifique sua internet.';
       formMsg.classList.add('show', 'error');
   })
   .finally(() => {
       // Retorna o botão ao estado original
-      btnSubmit.textContent = 'Enviar Pesquisa';
+      btnSubmit.textContent = 'Enviar Inscrição';
       btnSubmit.disabled = false;
   });
 });

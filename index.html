@@ -317,7 +317,7 @@
       <div class="unidade-count" id="unidadeCount"></div>
     </div>
 
-    <button type="submit" id="submitBtn">Enviar Pesquisa</button>
+    <button type="submit" id="submitBtn">Enviar Inscrição</button>
     <div id="formMsg"></div>
   </form>
 </div>
@@ -700,7 +700,7 @@ form.addEventListener('submit', function(e) {
   .then(response => {
       if (response.ok) {
           // Se o envio der certo, mostra a mensagem de sucesso e limpa o form
-          formMsg.textContent = 'Pesquisa enviada com sucesso!';
+          formMsg.textContent = 'Inscrição enviada com sucesso!';
           formMsg.classList.add('show', 'success');
 
           form.reset();
@@ -715,7 +715,7 @@ form.addEventListener('submit', function(e) {
           document.querySelectorAll('.hint').forEach(function(el) { el.textContent = ''; });
       } else {
           // Se houver erro na resposta do Power Automate
-          formMsg.textContent = 'Erro ao enviar a pesquisa. Tente novamente.';
+          formMsg.textContent = 'Erro ao enviar a inscrição. Tente novamente.';
           formMsg.classList.add('show', 'error');
       }
   })
@@ -727,7 +727,7 @@ form.addEventListener('submit', function(e) {
   })
   .finally(() => {
       // Retorna o botão ao estado original
-      btnSubmit.textContent = 'Enviar Pesquisa';
+      btnSubmit.textContent = 'Enviar Inscrição';
       btnSubmit.disabled = false;
   });
 });
