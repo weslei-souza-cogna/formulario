@@ -121,6 +121,21 @@
     font-weight: 700;
   }
 
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav-item img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(82, 25, 161, 0.1);
+  }
+
   @media (min-width: 600px) {
     .nav-grid {
       grid-template-columns: 1fr 1fr 1fr;
@@ -148,17 +163,26 @@
 
     <div class="card-body">
       <div class="nav-grid">
-        <a href="https://weslei-souza-cogna.github.io/formulario" class="nav-button">
-          <span class="button-title">Inscrição 1</span>
-        </a>
+        <div class="nav-item">
+          <a href="https://weslei-souza-cogna.github.io/formulario" class="nav-button">
+            <span class="button-title">Inscrição 1</span>
+          </a>
+          <img src="Inscricao1.png" alt="Inscrição 1">
+        </div>
 
-        <a href="https://weslei-souza-cogna.github.io/formulario/pesquisa2.html" class="nav-button">
-          <span class="button-title">Inscrição 2</span>
-        </a>
+        <div class="nav-item">
+          <a href="https://weslei-souza-cogna.github.io/formulario/pesquisa2.html" class="nav-button">
+            <span class="button-title">Inscrição 2</span>
+          </a>
+          <img src="Inscricao2.png" alt="Inscrição 2">
+        </div>
 
-        <a href="https://weslei-souza-cogna.github.io/formulario/nead.html" class="nav-button">
-          <span class="button-title">Inscrição NEAD</span>
-        </a>
+        <div class="nav-item">
+          <a href="https://weslei-souza-cogna.github.io/formulario/nead.html" class="nav-button">
+            <span class="button-title">Inscrição NEAD</span>
+          </a>
+          <img src="InscricaoNEAD.png" alt="Inscrição NEAD">
+        </div>
       </div>
     </div>
   </div>
