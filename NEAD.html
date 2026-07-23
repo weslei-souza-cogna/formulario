@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodologias Ativas: Aprender fazendo, ensinar transformando</title>
+<link rel="icon" type="image/x-icon" href="https://www.cogna.com.br/favicon.ico">
+<style>
+  :root {
+    --primary: #5219A1;
+    --accent: #ffad01;
+    --primary-light: #6d3fc0;
+    --error: #d63333;
+    --success: #2e9e5b;
+    --bg: #f3f0fa;
+    --text: #2c2340;
+    --border: #d9d0ec;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, #ffffff 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+
+  .card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(82, 25, 161, 0.15);
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  .card-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    width: 100%;
+    background: var(--accent);
+  }
+
+  .card-header h1 {
+    color: #fff;
+    margin: 0 0 6px 0;
+    font-size: 1.5rem;
+  }
+
+  .card-header p {
+    color: #e6dcfa;
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  .card-header .logo {
+    height: 40px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  form {
+    padding: 28px 32px 32px 32px;
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+    color: var(--primary);
+  }
+
+  label .required {
+    color: var(--accent);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: #fff;
+    color: var(--text);
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(82, 25, 161, 0.15);
+  }
+
+  input.invalid {
+    border-color: var(--error);
+  }
+
+  input.valid {
+    border-color: var(--success);
+  }
+
+  .hint {
+    font-size: 0.78rem;
+    margin-top: 5px;
+    min-height: 14px;
+  }
+
+  .hint.error { color: var(--error); }
+  .hint.ok { color: var(--success); }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #4a2e00;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.1s, filter 0.15s;
+  }
+
+  button[type="submit"]:hover {
+    filter: brightness(1.05);
+  }
+
+  button[type="submit"]:active {
+    transform: translateY(1px);
+  }
+
+  button[type="submit"]:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  #formMsg {
+    text-align: center;
+    margin-top: 16px;
+    font-weight: 600;
+    display: none;
+  }
+
+  #formMsg.show { display: block; }
+  #formMsg.success { color: var(--success); }
+  #formMsg.error { color: var(--error); }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <img src="https://portalinstitucional-assets.azureedge.net/strapi/assets/cogna_fd8c0b077b_1_7f0524b5f3.png" alt="Cogna" class="logo">
+    <h1>Metodologias Ativas: Aprender fazendo, ensinar transformando</h1>
+    <p>Preencha os campos abaixo com seus dados.</p>
+  </div>
+
+  <form id="pesquisaForm" novalidate>
+
+    <div class="field">
+      <label for="nomeCompleto">Nome Completo <span class="required">*</span></label>
+      <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Ex: Maria Silva" autocomplete="name">
+      <div class="hint" id="nomeCompletoHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="cpf">CPF <span class="required">*</span></label>
+      <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
+      <div class="hint" id="cpfHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="email">E-mail <span class="required">*</span></label>
+      <input type="email" id="email" name="email" placeholder="nome@exemplo.com" autocomplete="email">
+      <div class="hint" id="emailHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="telefone">Telefone / Celular <span class="required">*</span></label>
+      <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15">
+      <div class="hint" id="telefoneHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="cargo">Cargo <span class="required">*</span></label>
+      <input type="text" id="cargo" name="cargo" placeholder="Ex: Analista Administrativo" autocomplete="organization-title">
+      <div class="hint" id="cargoHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="nomeGestor">Nome Completo do Gestor <span class="required">*</span></label>
+      <input type="text" id="nomeGestor" name="nomeGestor" placeholder="Ex: João Souza">
+      <div class="hint" id="nomeGestorHint"></div>
+    </div>
+
+    <div class="field">
+      <label for="unidade">Nome Unidade Sistema <span class="required">*</span></label>
+      <input type="text" id="unidade" name="unidade" placeholder="Digite a Unidade">
+      <div class="hint" id="unidadeHint"></div>
+    </div>
+
+    <button type="submit" id="submitBtn">Enviar Inscrição</button>
+    <div id="formMsg"></div>
+  </form>
+</div>
+
+<script>
+/* ===================== Elementos ===================== */
+const form = document.getElementById('pesquisaForm');
+const nomeCompletoEl = document.getElementById('nomeCompleto');
+const cpfEl = document.getElementById('cpf');
+const emailEl = document.getElementById('email');
+const telefoneEl = document.getElementById('telefone');
+const cargoEl = document.getElementById('cargo');
+const nomeGestorEl = document.getElementById('nomeGestor');
+const unidadeEl = document.getElementById('unidade');
+const formMsg = document.getElementById('formMsg');
+
+/* ===================== Helpers de validação ===================== */
+function setHint(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'hint' + (type ? ' ' + type : '');
+}
+
+function markField(el, isValid) {
+  el.classList.remove('valid', 'invalid');
+  if (el.value.trim() === '') return;
+  el.classList.add(isValid ? 'valid' : 'invalid');
+}
+
+/* Nome completo: exige ao menos nome + sobrenome (2 palavras com 2+ letras cada) */
+function validarNomeCompleto(valor) {
+  const nome = valor.trim().replace(/\s+/g, ' ');
+  const partes = nome.split(' ').filter(function(p) { return p.length >= 2; });
+  const regexLetras = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/;
+  if (!regexLetras.test(nome)) return false;
+  return partes.length >= 2;
+}
+
+/* CPF: aplica máscara e valida dígitos verificadores */
+function mascaraCPF(valor) {
+  let v = valor.replace(/\D/g, '').slice(0, 11);
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  return v;
+}
+
+function validarCPF(cpfFormatado) {
+  const cpf = cpfFormatado.replace(/\D/g, '');
+  if (cpf.length !== 11) return false;
+  if (/^(\d)\1{10}$/.test(cpf)) return false;
+
+  let soma = 0;
+  for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i), 10) * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.charAt(9), 10)) return false;
+
+  soma = 0;
+  for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i), 10) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.charAt(10), 10)) return false;
+
+  return true;
+}
+
+/* E-mail */
+function validarEmail(valor) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  return regex.test(valor.trim());
+}
+
+/* Telefone: máscara (00) 00000-0000 ou (00) 0000-0000 */
+function mascaraTelefone(valor) {
+  let v = valor.replace(/\D/g, '').slice(0, 11);
+  if (v.length > 10) {
+    v = v.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+  } else if (v.length > 5) {
+    v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+  } else if (v.length > 2) {
+    v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+  } else if (v.length > 0) {
+    v = v.replace(/(\d{0,2})/, '($1');
+  }
+  return v.trim();
+}
+
+function validarTelefone(valor) {
+  const digitos = valor.replace(/\D/g, '');
+  return digitos.length === 10 || digitos.length === 11;
+}
+
+/* ===================== Listeners de campo ===================== */
+nomeCompletoEl.addEventListener('input', function() {
+  const ok = validarNomeCompleto(nomeCompletoEl.value);
+  markField(nomeCompletoEl, ok);
+  setHint('nomeCompletoHint', nomeCompletoEl.value.trim() === '' ? '' : (ok ? '' : 'Informe nome e sobrenome.'), 'error');
+});
+
+cpfEl.addEventListener('input', function() {
+  cpfEl.value = mascaraCPF(cpfEl.value);
+  const ok = validarCPF(cpfEl.value);
+  markField(cpfEl, ok);
+  setHint('cpfHint', cpfEl.value.trim() === '' ? '' : (ok ? '' : 'CPF inválido.'), 'error');
+});
+
+emailEl.addEventListener('input', function() {
+  const ok = validarEmail(emailEl.value);
+  markField(emailEl, ok);
+  setHint('emailHint', emailEl.value.trim() === '' ? '' : (ok ? '' : 'E-mail inválido.'), 'error');
+});
+
+telefoneEl.addEventListener('input', function() {
+  telefoneEl.value = mascaraTelefone(telefoneEl.value);
+  const ok = validarTelefone(telefoneEl.value);
+  markField(telefoneEl, ok);
+  setHint('telefoneHint', telefoneEl.value.trim() === '' ? '' : (ok ? '' : 'Telefone inválido.'), 'error');
+});
+
+cargoEl.addEventListener('input', function() {
+  const ok = cargoEl.value.trim().length >= 2;
+  markField(cargoEl, ok);
+});
+
+nomeGestorEl.addEventListener('input', function() {
+  const ok = validarNomeCompleto(nomeGestorEl.value);
+  markField(nomeGestorEl, ok);
+  setHint('nomeGestorHint', nomeGestorEl.value.trim() === '' ? '' : (ok ? '' : 'Informe nome e sobrenome do gestor.'), 'error');
+});
+
+unidadeEl.addEventListener('input', function() {
+  const ok = unidadeEl.value.trim().length >= 2;
+  markField(unidadeEl, ok);
+  setHint('unidadeHint', unidadeEl.value.trim() === '' ? '' : (ok ? '' : 'Informe a Unidade.'), 'error');
+});
+
+/* ===================== Submit ===================== */
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const validNome = validarNomeCompleto(nomeCompletoEl.value);
+  const validCpf = validarCPF(cpfEl.value);
+  const validEmail = validarEmail(emailEl.value);
+  const validTelefone = validarTelefone(telefoneEl.value);
+  const validCargo = cargoEl.value.trim().length >= 2;
+  const validGestor = validarNomeCompleto(nomeGestorEl.value);
+  const validUnidade = unidadeEl.value.trim().length >= 2;
+
+  markField(nomeCompletoEl, validNome);
+  markField(cpfEl, validCpf);
+  markField(emailEl, validEmail);
+  markField(telefoneEl, validTelefone);
+  markField(cargoEl, validCargo);
+  markField(nomeGestorEl, validGestor);
+  markField(unidadeEl, validUnidade);
+
+  if (!validNome) setHint('nomeCompletoHint', 'Informe nome e sobrenome.', 'error');
+  if (!validCpf) setHint('cpfHint', 'CPF inválido.', 'error');
+  if (!validEmail) setHint('emailHint', 'E-mail inválido.', 'error');
+  if (!validTelefone) setHint('telefoneHint', 'Telefone inválido.', 'error');
+  if (!validGestor) setHint('nomeGestorHint', 'Informe nome e sobrenome do gestor.', 'error');
+  if (!validUnidade) setHint('unidadeHint', 'Informe a Unidade.', 'error');
+
+  const tudoValido = validNome && validCpf && validEmail && validTelefone &&
+                      validCargo && validGestor && validUnidade;
+
+  formMsg.classList.remove('show', 'success', 'error');
+
+  if (!tudoValido) {
+    formMsg.textContent = 'Por favor, corrija os campos destacados antes de enviar.';
+    formMsg.classList.add('show', 'error');
+    return;
+  }
+
+  const agora = new Date();
+
+  const dados = {
+    nomeCompleto: nomeCompletoEl.value.trim(),
+    cpf: cpfEl.value,
+    email: emailEl.value.trim(),
+    telefone: telefoneEl.value,
+    cargo: cargoEl.value.trim(),
+    nomeGestor: nomeGestorEl.value.trim(),
+    unidade: unidadeEl.value.trim(),
+    dataHoraEnvio: agora.toLocaleString('pt-BR'),
+    dataHoraEnvioISO: agora.toISOString()
+  };
+
+  // Cole aqui a URL gerada pelo Power Automate no gatilho HTTP
+  const urlPowerAutomate = "https://defaulta50e7b768ea5492cbf1797d652fc3c.e9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/ad174c2de25f4241879bdb70dd30fc4d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=fZ_8tObJeY-0YVuz6NOmhMBQTEdx2WhModG3KqPHUHU";
+
+  // Muda o texto do botão para indicar carregamento
+  const btnSubmit = document.getElementById('submitBtn');
+  btnSubmit.textContent = 'Enviando...';
+  btnSubmit.disabled = true;
+
+  fetch(urlPowerAutomate, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dados)
+  })
+  .then(response => {
+      if (response.ok) {
+          // Se o envio der certo, mostra a mensagem de sucesso e limpa o form
+          formMsg.textContent = 'Inscrição enviada com sucesso!';
+          formMsg.classList.add('show', 'success');
+
+          form.reset();
+          document.querySelectorAll('input').forEach(function(el) {
+            el.classList.remove('valid', 'invalid');
+          });
+          document.querySelectorAll('.hint').forEach(function(el) { el.textContent = ''; });
+      } else {
+          // Se houver erro na resposta do Power Automate
+          formMsg.textContent = 'Erro ao enviar a inscrição. Tente novamente.';
+          formMsg.classList.add('show', 'error');
+      }
+  })
+  .catch(error => {
+      // Se houver erro de conexão/internet (ou bloqueio de CORS)
+      formMsg.textContent = 'Erro de conexão. Verifique sua internet.';
+      formMsg.classList.add('show', 'error');
+  })
+  .finally(() => {
+      // Retorna o botão ao estado original
+      btnSubmit.textContent = 'Enviar Inscrição';
+      btnSubmit.disabled = false;
+  });
+});
+</script>
+
+</body>
+</html>
