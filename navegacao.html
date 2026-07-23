@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodologias Ativas: Aprender fazendo, ensinar transformando</title>
+<link rel="icon" type="image/x-icon" href="https://www.cogna.com.br/favicon.ico">
+<style>
+  :root {
+    --primary: #5219A1;
+    --accent: #ffad01;
+    --primary-light: #6d3fc0;
+    --bg: #f3f0fa;
+    --text: #2c2340;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, #ffffff 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(82, 25, 161, 0.15);
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  .card-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    width: 100%;
+    background: var(--accent);
+  }
+
+  .card-header h1 {
+    color: #fff;
+    margin: 0 0 6px 0;
+    font-size: 1.5rem;
+  }
+
+  .card-header p {
+    color: #e6dcfa;
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  .card-header .logo {
+    height: 40px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .card-body {
+    padding: 28px 32px 32px 32px;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .nav-button {
+    display: inline-block;
+    padding: 16px 24px;
+    background: var(--accent);
+    color: #4a2e00;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: center;
+    transition: transform 0.1s, filter 0.15s;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .nav-button:hover {
+    filter: brightness(1.05);
+  }
+
+  .nav-button:active {
+    transform: translateY(1px);
+  }
+
+  .button-label {
+    display: block;
+    font-size: 0.88rem;
+    color: #2c2340;
+    margin-bottom: 4px;
+  }
+
+  .button-title {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  @media (min-width: 600px) {
+    .nav-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .nav-button {
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <img src="https://portalinstitucional-assets.azureedge.net/strapi/assets/cogna_fd8c0b077b_1_7f0524b5f3.png" alt="Cogna" class="logo">
+      <h1>Metodologias Ativas: Aprender fazendo, ensinar transformando</h1>
+      <p>Selecione o tipo de formulário abaixo. =D</p>
+    </div>
+
+    <div class="card-body">
+      <div class="nav-grid">
+        <a href="https://weslei-souza-cogna.github.io/formulario" class="nav-button">
+          <span class="button-label">Gestor</span>
+          <span class="button-title">Pesquisa 1</span>
+        </a>
+
+        <a href="https://weslei-souza-cogna.github.io/formulario/pesquisa2.html" class="nav-button">
+          <span class="button-label">Diretor</span>
+          <span class="button-title">Pesquisa 2</span>
+        </a>
+
+        <a href="https://weslei-souza-cogna.github.io/formulario/nead.html" class="nav-button">
+          <span class="button-label">NEAD</span>
+          <span class="button-title">Pesquisa NEAD</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
