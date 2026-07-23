@@ -179,6 +179,8 @@
 
   <form id="pesquisaForm" novalidate>
 
+    <input type="hidden" id="tipo" name="tipo" value="NEAD">
+
     <div class="field">
       <label for="nomeCompleto">Nome Completo <span class="required">*</span></label>
       <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Ex: Maria Silva" autocomplete="name">
@@ -215,12 +217,6 @@
       <div class="hint" id="nomeGestorHint"></div>
     </div>
 
-    <div class="field">
-      <label for="unidade">Nome Unidade Sistema <span class="required">*</span></label>
-      <input type="text" id="unidade" name="unidade" placeholder="Digite a Unidade">
-      <div class="hint" id="unidadeHint"></div>
-    </div>
-
     <button type="submit" id="submitBtn">Enviar Inscrição</button>
     <div id="formMsg"></div>
   </form>
@@ -235,7 +231,6 @@ const emailEl = document.getElementById('email');
 const telefoneEl = document.getElementById('telefone');
 const cargoEl = document.getElementById('cargo');
 const nomeGestorEl = document.getElementById('nomeGestor');
-const unidadeEl = document.getElementById('unidade');
 const formMsg = document.getElementById('formMsg');
 
 /* ===================== Helpers de validação ===================== */
@@ -353,12 +348,6 @@ nomeGestorEl.addEventListener('input', function() {
   setHint('nomeGestorHint', nomeGestorEl.value.trim() === '' ? '' : (ok ? '' : 'Informe nome e sobrenome do gestor.'), 'error');
 });
 
-unidadeEl.addEventListener('input', function() {
-  const ok = unidadeEl.value.trim().length >= 2;
-  markField(unidadeEl, ok);
-  setHint('unidadeHint', unidadeEl.value.trim() === '' ? '' : (ok ? '' : 'Informe a Unidade.'), 'error');
-});
-
 /* ===================== Submit ===================== */
 form.addEventListener('submit', function(e) {
   e.preventDefault();
@@ -369,7 +358,6 @@ form.addEventListener('submit', function(e) {
   const validTelefone = validarTelefone(telefoneEl.value);
   const validCargo = cargoEl.value.trim().length >= 2;
   const validGestor = validarNomeCompleto(nomeGestorEl.value);
-  const validUnidade = unidadeEl.value.trim().length >= 2;
 
   markField(nomeCompletoEl, validNome);
   markField(cpfEl, validCpf);
@@ -377,17 +365,15 @@ form.addEventListener('submit', function(e) {
   markField(telefoneEl, validTelefone);
   markField(cargoEl, validCargo);
   markField(nomeGestorEl, validGestor);
-  markField(unidadeEl, validUnidade);
 
   if (!validNome) setHint('nomeCompletoHint', 'Informe nome e sobrenome.', 'error');
   if (!validCpf) setHint('cpfHint', 'CPF inválido.', 'error');
   if (!validEmail) setHint('emailHint', 'E-mail inválido.', 'error');
   if (!validTelefone) setHint('telefoneHint', 'Telefone inválido.', 'error');
   if (!validGestor) setHint('nomeGestorHint', 'Informe nome e sobrenome do gestor.', 'error');
-  if (!validUnidade) setHint('unidadeHint', 'Informe a Unidade.', 'error');
 
   const tudoValido = validNome && validCpf && validEmail && validTelefone &&
-                      validCargo && validGestor && validUnidade;
+                      validCargo && validGestor;
 
   formMsg.classList.remove('show', 'success', 'error');
 
@@ -400,19 +386,19 @@ form.addEventListener('submit', function(e) {
   const agora = new Date();
 
   const dados = {
+    tipo: 'NEAD',
     nomeCompleto: nomeCompletoEl.value.trim(),
     cpf: cpfEl.value,
     email: emailEl.value.trim(),
     telefone: telefoneEl.value,
     cargo: cargoEl.value.trim(),
     nomeGestor: nomeGestorEl.value.trim(),
-    unidade: unidadeEl.value.trim(),
     dataHoraEnvio: agora.toLocaleString('pt-BR'),
     dataHoraEnvioISO: agora.toISOString()
   };
 
   // Cole aqui a URL gerada pelo Power Automate no gatilho HTTP
-  const urlPowerAutomate = "https://defaulta50e7b768ea5492cbf1797d652fc3c.e9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/ad174c2de25f4241879bdb70dd30fc4d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=fZ_8tObJeY-0YVuz6NOmhMBQTEdx2WhModG3KqPHUHU";
+  const urlPowerAutomate = "https://defaulta50e7b768ea5492cbf1797d652fc3c.e9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/7f3104d04a8c4bcca77d9992453f89a1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VpzoK33eUNrH4fwgRQWouIeK0n-9tE-RQLOoZX8OH5Q";
 
   // Muda o texto do botão para indicar carregamento
   const btnSubmit = document.getElementById('submitBtn');
