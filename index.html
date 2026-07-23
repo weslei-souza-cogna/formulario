@@ -263,6 +263,8 @@
 
   <form id="pesquisaForm" novalidate>
 
+    <input type="hidden" id="tipo" name="tipo" value="gestor">
+
     <div class="field">
       <label for="nomeCompleto">Nome Completo <span class="required">*</span></label>
       <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Ex: Maria Silva" autocomplete="name">
@@ -672,6 +674,7 @@ form.addEventListener('submit', function(e) {
   }
 
   const dados = {
+    tipo: 'gestor',
     nomeCompleto: nomeCompletoEl.value.trim(),
     cpf: cpfEl.value,
     email: emailEl.value.trim(),
