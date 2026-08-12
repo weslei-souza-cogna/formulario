@@ -166,6 +166,23 @@
   #formMsg.show { display: block; }
   #formMsg.success { color: var(--success); }
   #formMsg.error { color: var(--error); }
+
+  .message-container {
+    padding: 28px 32px;
+    text-align: center;
+  }
+
+  .message-container h2 {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin: 0 0 12px 0;
+  }
+
+  .message-container p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
 </style>
 </head>
 <body>
@@ -177,270 +194,10 @@
     <p>Preencha os campos abaixo com seus dados.</p>
   </div>
 
-  <form id="pesquisaForm" novalidate>
-
-    <input type="hidden" id="tipo" name="tipo" value="NEAD">
-
-    <div class="field">
-      <label for="nomeCompleto">Nome Completo <span class="required">*</span></label>
-      <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Ex: Maria Silva" autocomplete="name">
-      <div class="hint" id="nomeCompletoHint"></div>
-    </div>
-
-    <div class="field">
-      <label for="cpf">CPF <span class="required">*</span></label>
-      <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
-      <div class="hint" id="cpfHint"></div>
-    </div>
-
-    <div class="field">
-      <label for="email">E-mail <span class="required">*</span></label>
-      <input type="email" id="email" name="email" placeholder="nome@exemplo.com" autocomplete="email">
-      <div class="hint" id="emailHint"></div>
-    </div>
-
-    <div class="field">
-      <label for="telefone">Telefone / Celular <span class="required">*</span></label>
-      <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15">
-      <div class="hint" id="telefoneHint"></div>
-    </div>
-
-    <div class="field">
-      <label for="cargo">Cargo <span class="required">*</span></label>
-      <input type="text" id="cargo" name="cargo" placeholder="Ex: Analista Administrativo" autocomplete="organization-title">
-      <div class="hint" id="cargoHint"></div>
-    </div>
-
-    <div class="field">
-      <label for="nomeGestor">Nome Completo do Gestor <span class="required">*</span></label>
-      <input type="text" id="nomeGestor" name="nomeGestor" placeholder="Ex: João Souza">
-      <div class="hint" id="nomeGestorHint"></div>
-    </div>
-
-    <button type="submit" id="submitBtn">Enviar Inscrição</button>
-    <div id="formMsg"></div>
-  </form>
+  <div class="message-container">
+    <h2>Inscrições encerradas</h2>
+  </div>
 </div>
-
-<script>
-/* ===================== Elementos ===================== */
-const form = document.getElementById('pesquisaForm');
-const nomeCompletoEl = document.getElementById('nomeCompleto');
-const cpfEl = document.getElementById('cpf');
-const emailEl = document.getElementById('email');
-const telefoneEl = document.getElementById('telefone');
-const cargoEl = document.getElementById('cargo');
-const nomeGestorEl = document.getElementById('nomeGestor');
-const formMsg = document.getElementById('formMsg');
-
-/* ===================== Helpers de validação ===================== */
-function setHint(id, msg, type) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.className = 'hint' + (type ? ' ' + type : '');
-}
-
-function markField(el, isValid) {
-  el.classList.remove('valid', 'invalid');
-  if (el.value.trim() === '') return;
-  el.classList.add(isValid ? 'valid' : 'invalid');
-}
-
-/* Nome completo: exige ao menos nome + sobrenome (2 palavras com 2+ letras cada) */
-function validarNomeCompleto(valor) {
-  const nome = valor.trim().replace(/\s+/g, ' ');
-  const partes = nome.split(' ').filter(function(p) { return p.length >= 2; });
-  const regexLetras = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/;
-  if (!regexLetras.test(nome)) return false;
-  return partes.length >= 2;
-}
-
-/* CPF: aplica máscara e valida dígitos verificadores */
-function mascaraCPF(valor) {
-  let v = valor.replace(/\D/g, '').slice(0, 11);
-  v = v.replace(/(\d{3})(\d)/, '$1.$2');
-  v = v.replace(/(\d{3})(\d)/, '$1.$2');
-  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  return v;
-}
-
-function validarCPF(cpfFormatado) {
-  const cpf = cpfFormatado.replace(/\D/g, '');
-  if (cpf.length !== 11) return false;
-  if (/^(\d)\1{10}$/.test(cpf)) return false;
-
-  let soma = 0;
-  for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i), 10) * (10 - i);
-  let resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.charAt(9), 10)) return false;
-
-  soma = 0;
-  for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i), 10) * (11 - i);
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.charAt(10), 10)) return false;
-
-  return true;
-}
-
-/* E-mail */
-function validarEmail(valor) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  return regex.test(valor.trim());
-}
-
-/* Telefone: máscara (00) 00000-0000 ou (00) 0000-0000 */
-function mascaraTelefone(valor) {
-  let v = valor.replace(/\D/g, '').slice(0, 11);
-  if (v.length > 10) {
-    v = v.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
-  } else if (v.length > 5) {
-    v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-  } else if (v.length > 2) {
-    v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
-  } else if (v.length > 0) {
-    v = v.replace(/(\d{0,2})/, '($1');
-  }
-  return v.trim();
-}
-
-function validarTelefone(valor) {
-  const digitos = valor.replace(/\D/g, '');
-  return digitos.length === 10 || digitos.length === 11;
-}
-
-/* ===================== Listeners de campo ===================== */
-nomeCompletoEl.addEventListener('input', function() {
-  const ok = validarNomeCompleto(nomeCompletoEl.value);
-  markField(nomeCompletoEl, ok);
-  setHint('nomeCompletoHint', nomeCompletoEl.value.trim() === '' ? '' : (ok ? '' : 'Informe nome e sobrenome.'), 'error');
-});
-
-cpfEl.addEventListener('input', function() {
-  cpfEl.value = mascaraCPF(cpfEl.value);
-  const ok = validarCPF(cpfEl.value);
-  markField(cpfEl, ok);
-  setHint('cpfHint', cpfEl.value.trim() === '' ? '' : (ok ? '' : 'CPF inválido.'), 'error');
-});
-
-emailEl.addEventListener('input', function() {
-  const ok = validarEmail(emailEl.value);
-  markField(emailEl, ok);
-  setHint('emailHint', emailEl.value.trim() === '' ? '' : (ok ? '' : 'E-mail inválido.'), 'error');
-});
-
-telefoneEl.addEventListener('input', function() {
-  telefoneEl.value = mascaraTelefone(telefoneEl.value);
-  const ok = validarTelefone(telefoneEl.value);
-  markField(telefoneEl, ok);
-  setHint('telefoneHint', telefoneEl.value.trim() === '' ? '' : (ok ? '' : 'Telefone inválido.'), 'error');
-});
-
-cargoEl.addEventListener('input', function() {
-  const ok = cargoEl.value.trim().length >= 2;
-  markField(cargoEl, ok);
-});
-
-nomeGestorEl.addEventListener('input', function() {
-  const ok = validarNomeCompleto(nomeGestorEl.value);
-  markField(nomeGestorEl, ok);
-  setHint('nomeGestorHint', nomeGestorEl.value.trim() === '' ? '' : (ok ? '' : 'Informe nome e sobrenome do gestor.'), 'error');
-});
-
-/* ===================== Submit ===================== */
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const validNome = validarNomeCompleto(nomeCompletoEl.value);
-  const validCpf = validarCPF(cpfEl.value);
-  const validEmail = validarEmail(emailEl.value);
-  const validTelefone = validarTelefone(telefoneEl.value);
-  const validCargo = cargoEl.value.trim().length >= 2;
-  const validGestor = validarNomeCompleto(nomeGestorEl.value);
-
-  markField(nomeCompletoEl, validNome);
-  markField(cpfEl, validCpf);
-  markField(emailEl, validEmail);
-  markField(telefoneEl, validTelefone);
-  markField(cargoEl, validCargo);
-  markField(nomeGestorEl, validGestor);
-
-  if (!validNome) setHint('nomeCompletoHint', 'Informe nome e sobrenome.', 'error');
-  if (!validCpf) setHint('cpfHint', 'CPF inválido.', 'error');
-  if (!validEmail) setHint('emailHint', 'E-mail inválido.', 'error');
-  if (!validTelefone) setHint('telefoneHint', 'Telefone inválido.', 'error');
-  if (!validGestor) setHint('nomeGestorHint', 'Informe nome e sobrenome do gestor.', 'error');
-
-  const tudoValido = validNome && validCpf && validEmail && validTelefone &&
-                      validCargo && validGestor;
-
-  formMsg.classList.remove('show', 'success', 'error');
-
-  if (!tudoValido) {
-    formMsg.textContent = 'Por favor, corrija os campos destacados antes de enviar.';
-    formMsg.classList.add('show', 'error');
-    return;
-  }
-
-  const agora = new Date();
-
-  const dados = {
-    tipo: 'NEAD',
-    nomeCompleto: nomeCompletoEl.value.trim(),
-    cpf: cpfEl.value,
-    email: emailEl.value.trim(),
-    telefone: telefoneEl.value,
-    cargo: cargoEl.value.trim(),
-    nomeGestor: nomeGestorEl.value.trim(),
-    dataHoraEnvio: agora.toLocaleString('pt-BR'),
-    dataHoraEnvioISO: agora.toISOString()
-  };
-
-  // Cole aqui a URL gerada pelo Power Automate no gatilho HTTP
-  const urlPowerAutomate = "https://defaulta50e7b768ea5492cbf1797d652fc3c.e9.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/7f3104d04a8c4bcca77d9992453f89a1/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VpzoK33eUNrH4fwgRQWouIeK0n-9tE-RQLOoZX8OH5Q";
-
-  // Muda o texto do botão para indicar carregamento
-  const btnSubmit = document.getElementById('submitBtn');
-  btnSubmit.textContent = 'Enviando...';
-  btnSubmit.disabled = true;
-
-  fetch(urlPowerAutomate, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dados)
-  })
-  .then(response => {
-      if (response.ok) {
-          // Se o envio der certo, mostra a mensagem de sucesso e limpa o form
-          formMsg.textContent = 'Inscrição enviada com sucesso!';
-          formMsg.classList.add('show', 'success');
-
-          form.reset();
-          document.querySelectorAll('input').forEach(function(el) {
-            el.classList.remove('valid', 'invalid');
-          });
-          document.querySelectorAll('.hint').forEach(function(el) { el.textContent = ''; });
-      } else {
-          // Se houver erro na resposta do Power Automate
-          formMsg.textContent = 'Erro ao enviar a inscrição. Tente novamente.';
-          formMsg.classList.add('show', 'error');
-      }
-  })
-  .catch(error => {
-      // Se houver erro de conexão/internet (ou bloqueio de CORS)
-      formMsg.textContent = 'Erro de conexão. Verifique sua internet.';
-      formMsg.classList.add('show', 'error');
-  })
-  .finally(() => {
-      // Retorna o botão ao estado original
-      btnSubmit.textContent = 'Enviar Inscrição';
-      btnSubmit.disabled = false;
-  });
-});
-</script>
 
 </body>
 </html>
